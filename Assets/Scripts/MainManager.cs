@@ -10,11 +10,13 @@ public class MainManager : MonoBehaviour
     public int LineCount = 6;
     public Rigidbody Ball;
 
+    public Text highScoreText;
     public Text ScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
-    private int m_Points;
+    public int m_Points;
+    private int newHighScore;
     
     private bool m_GameOver = false;
 
@@ -36,6 +38,7 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
+        // highScoreText.text = "High Score: " + MenuManager.Instance.firstName + m_Points;
     }
 
     private void Update()
@@ -55,6 +58,10 @@ public class MainManager : MonoBehaviour
         }
         else if (m_GameOver)
         {
+           // m_Points = MenuManager.Instance.highScore;
+            
+            SetHighScore();
+            Debug.Log("SET HIgh m_Points = MenuManager.Instance.highScore");
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
@@ -66,11 +73,33 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+        //if(m_GameOver == true && m_Points > 0 && m_Points > MenuManager.Instance.highScore)
+       // {
+          //  m_Points = MenuManager.Instance.highScore;
+           // Debug.Log("m_Points = MenuManager.Instance.highScore");
+       // }
     }
+
+   // public void SetHighScore(string h)
+   // {
+       // MenuManager.Instance.firstName = h;
+      //  highScoreText.text = "High: " + h;
+
+   // }
 
     public void GameOver()
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
+       // m_Points = MenuManager.Instance.highScore;
+    }
+
+    public void SetHighScore()
+    {
+        if (m_GameOver && m_Points > MenuManager.Instance.highScore)
+        {
+            m_Points = newHighScore;
+            MenuManager.Instance.highScore = newHighScore;
+        }
     }
 }
