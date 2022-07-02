@@ -30,11 +30,16 @@ public class MenuManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadName();
-        LoadScore();
+        highScoreCounter = highScore;
+        AssignName();
+       //LoadScore();
 
       // mainManagerScript = GameObject.Find("MainManager").GetComponent<MainManager>();
     }
- 
+ private void AssignName()
+    {
+        highScoreLeader = firstName;
+    }
 
 
 
@@ -42,7 +47,7 @@ public class MenuManager : MonoBehaviour
     class SaveData
     {
         public string firstName;
-        //public int highScore;
+        public int highScore;
     }
 
     public void SaveName()
@@ -51,7 +56,7 @@ public class MenuManager : MonoBehaviour
         //with the TeamColor variable saved in the MainManager:
         SaveData data = new SaveData();
         data.firstName = firstName;
-        //data.highScore = highScore;
+        data.highScore = highScore;
         //transform that instance to JSON
         string json = JsonUtility.ToJson(data);
 
@@ -70,26 +75,27 @@ public class MenuManager : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
             firstName = data.firstName;
-            //highScore = data.highScore;
+            highScore = data.highScore;
 
             userNameSaved.text = firstName;
-            
+            highScoreText.text = $"High Score: {firstName} : {highScore}";
 
 
         }
     }
-    [System.Serializable] //attribute required for JsonUtility -transform into JSON must be serializable 
+
+
+    /*[System.Serializable] //attribute required for JsonUtility -transform into JSON must be serializable 
     class SaveScoreData
     {
         
         public int highScore;
     }
-
     public void SaveScore()
     {
         //created a new instance of the save data and filled its team color class member
         //with the TeamColor variable saved in the MainManager:
-        SaveScoreData data = new SaveScoreData();
+        SaveData data = new SaveData();
         //data.firstName = firstName;
         data.highScore = highScore;
         //transform that instance to JSON
@@ -107,17 +113,18 @@ public class MenuManager : MonoBehaviour
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            SaveScoreData data = JsonUtility.FromJson<SaveScoreData>(json);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
 
-           // firstName = data.firstName;
+            // firstName = data.firstName;
             highScore = data.highScore;
-            highScoreText.text = "High Score: " + firstName + highScore;
+            highScoreText.text = "High Score: " + highScore + firstName;
             //userNameSaved.text = firstName;
             //highScoreText.text = "High Score: " + highScore;
 
 
         }
-    }
+    }*/
+
 
     //public void CountHighScore(int highScore)
     //{

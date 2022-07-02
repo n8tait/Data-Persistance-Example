@@ -26,7 +26,8 @@ public class MainManager : MonoBehaviour
     {
         if(MenuManager.Instance != null)
         {
-            highScoreText.text = "High Score: " + MenuManager.Instance.firstName;
+            //MenuManager.Instance.LoadName();
+          highScoreText.text = $"High Score: {MenuManager.Instance.highScoreLeader} : {MenuManager.Instance.highScoreCounter}";
         }
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
@@ -68,8 +69,8 @@ public class MainManager : MonoBehaviour
            // Debug.Log("SET HIgh m_Points = MenuManager.Instance.highScore");
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                MenuManager.Instance.SaveScore();
-                MenuManager.Instance.SaveName();
+                
+                //MenuManager.Instance.SaveName();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
@@ -103,7 +104,13 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-        
+        SetHighScore();
+        //if(m_Points > MenuManager.Instance.highScore)
+        //{
+            //MenuManager.Instance.SaveName();
+        //}
+       // MenuManager.Instance.SaveScore();
+        //MenuManager.Instance.SaveName();
         //if(m_Points > 0 && m_Points > MenuManager.Instance.highScore)
         //{
 
@@ -112,12 +119,16 @@ public class MainManager : MonoBehaviour
         Debug.Log("GameOver()  m_Points =" + m_Points);
     }
 
-   // public void SetHighScore()
-   // {
-     //   if (m_GameOver && m_Points > MenuManager.Instance.highScore)
-      //  {
-      //      m_Points = newHighScore;
-       //     MenuManager.Instance.highScore = newHighScore;
-      //  }
-    //}
+    public void SetHighScore()
+   {
+
+        if (m_Points > MenuManager.Instance.highScoreCounter)
+        {
+            //m_Points = newHighScore;
+            //MenuManager.Instance.highScore = newHighScore;
+            MenuManager.Instance.SaveName();
+            //MenuManager.Instance.LoadName();
+            highScoreText.text = $"High Score: {MenuManager.Instance.firstName} : {MenuManager.Instance.highScore}";
+        }
+    }
 }

@@ -8,7 +8,7 @@ public class ReadInput : MonoBehaviour
     public Text Username_field; //have to drag+drop Text(Legacy) in Inspector
     private void Start()
     {
-       
+
     }
 
     public void GetTextInput()
@@ -18,6 +18,6 @@ public class ReadInput : MonoBehaviour
         Debug.Log(userID);
 
         MenuManager.Instance.firstName = userID;
+
     }
-    
 }
