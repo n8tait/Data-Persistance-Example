@@ -31,15 +31,16 @@ public class MenuUIHandler : MonoBehaviour
 
 
     //Exits/Quit program - works with a built application but not in Unity playmode
-    public void Exit()
-    {
+    //public void Exit()
+   // {
         //this will save the last selected color on application exit
-        MenuManager.Instance.SaveName();
+      //  MenuManager.Instance.SaveName();
+      //  MenuManager.Instance.SaveScore();
 
-#if UNITY_EDITOR
-        EditorApplication.ExitPlaymode();
-#else
-        Application.Quit();
-#endif
-    }
+//#if UNITY_EDITOR
+ //       EditorApplication.ExitPlaymode();
+//#else
+  //      Application.Quit();
+//#endif
+   // }
 }

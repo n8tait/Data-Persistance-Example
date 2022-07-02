@@ -548,8 +548,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c9e81f21533b4ceaab3d60fbdc67c37, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerName: 
-  highScoreText: {fileID: 0}
 --- !u!1 &1283813000
 GameObject:
   m_ObjectHideFlags: 0
@@ -1486,6 +1484,8 @@ MonoBehaviour:
   highScoreText: {fileID: 1058237509}
   userNameSaved: {fileID: 1003037145}
   firstName: 
+  highScoreLeader: 
+  highScore: 0
 --- !u!1 &2143195655
 GameObject:
   m_ObjectHideFlags: 0

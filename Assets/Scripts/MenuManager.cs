@@ -14,7 +14,8 @@ public class MenuManager : MonoBehaviour
     public string firstName;
     public string highScoreLeader;
     public int highScore;
-    private MainManager mainManagerScript;
+    public int highScoreCounter;
+    //private MainManager mainManagerScript;
     //private string savedName;
 
     
@@ -29,10 +30,11 @@ public class MenuManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadName();
+        LoadScore();
 
-        mainManagerScript = GameObject.Find("MainManager").GetComponent<MainManager>();
+      // mainManagerScript = GameObject.Find("MainManager").GetComponent<MainManager>();
     }
-
+ 
 
 
 
@@ -40,20 +42,8 @@ public class MenuManager : MonoBehaviour
     class SaveData
     {
         public string firstName;
-        public int highScore;
+        //public int highScore;
     }
-
-    public void HighScore()
-    {
-        if (mainManagerScript.m_Points > 0)
-        { 
-         Instance.highScore = mainManagerScript.m_Points;
-        
-           // m_Points = newHighScore;
-           // MenuManager.Instance.highScore = newHighScore;
-        }
-    }
-
 
     public void SaveName()
     {
@@ -61,7 +51,7 @@ public class MenuManager : MonoBehaviour
         //with the TeamColor variable saved in the MainManager:
         SaveData data = new SaveData();
         data.firstName = firstName;
-        data.highScore = highScore;
+        //data.highScore = highScore;
         //transform that instance to JSON
         string json = JsonUtility.ToJson(data);
 
@@ -80,20 +70,68 @@ public class MenuManager : MonoBehaviour
             SaveData data = JsonUtility.FromJson<SaveData>(json);
 
             firstName = data.firstName;
-            highScore = data.highScore;
+            //highScore = data.highScore;
 
             userNameSaved.text = firstName;
-            highScoreText.text = "High Score: " + firstName + highScore;
+            
 
 
         }
     }
-    //public void SetTextBoxUsername()
-  //  {
-      
-          //  firstName = savedName;
-
-       // savedName = userNameSaved.text;
+    [System.Serializable] //attribute required for JsonUtility -transform into JSON must be serializable 
+    class SaveScoreData
+    {
         
+        public int highScore;
+    }
+
+    public void SaveScore()
+    {
+        //created a new instance of the save data and filled its team color class member
+        //with the TeamColor variable saved in the MainManager:
+        SaveScoreData data = new SaveScoreData();
+        //data.firstName = firstName;
+        data.highScore = highScore;
+        //transform that instance to JSON
+        string json = JsonUtility.ToJson(data);
+
+        //write string to a file
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+
+    }
+
+    //this method is the reversal of SaveColor method; reads the saved data and sets TeamColor
+    public void LoadScore()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveScoreData data = JsonUtility.FromJson<SaveScoreData>(json);
+
+           // firstName = data.firstName;
+            highScore = data.highScore;
+            highScoreText.text = "High Score: " + firstName + highScore;
+            //userNameSaved.text = firstName;
+            //highScoreText.text = "High Score: " + highScore;
+
+
+        }
+    }
+
+    //public void CountHighScore(int highScore)
+    //{
+
+    //  highScoreCounter += highScore;
+
+    //}
+
+    //public void SetTextBoxUsername()
+    //  {
+
+    //  firstName = savedName;
+
+    // savedName = userNameSaved.text;
+
     //}
 }

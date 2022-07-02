@@ -16,7 +16,7 @@ public class MainManager : MonoBehaviour
     
     private bool m_Started = false;
     public int m_Points;
-    private int newHighScore;
+    public int newHighScore;
     
     private bool m_GameOver = false;
 
@@ -24,6 +24,10 @@ public class MainManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(MenuManager.Instance != null)
+        {
+            highScoreText.text = "High Score: " + MenuManager.Instance.firstName;
+        }
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
         
@@ -60,10 +64,12 @@ public class MainManager : MonoBehaviour
         {
            // m_Points = MenuManager.Instance.highScore;
             
-            SetHighScore();
-            Debug.Log("SET HIgh m_Points = MenuManager.Instance.highScore");
+            //SetHighScore();
+           // Debug.Log("SET HIgh m_Points = MenuManager.Instance.highScore");
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                MenuManager.Instance.SaveScore();
+                MenuManager.Instance.SaveName();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
@@ -71,8 +77,14 @@ public class MainManager : MonoBehaviour
 
     void AddPoint(int point)
     {
-        m_Points += point;
+        
+        newHighScore += point;
+            m_Points += point;
+        MenuManager.Instance.highScore = newHighScore;
         ScoreText.text = $"Score : {m_Points}";
+      
+   
+
         //if(m_GameOver == true && m_Points > 0 && m_Points > MenuManager.Instance.highScore)
        // {
           //  m_Points = MenuManager.Instance.highScore;
@@ -91,15 +103,21 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-       // m_Points = MenuManager.Instance.highScore;
+        
+        //if(m_Points > 0 && m_Points > MenuManager.Instance.highScore)
+        //{
+
+        //}
+        //m_Points = MenuManager.Instance.highScore;
+        Debug.Log("GameOver()  m_Points =" + m_Points);
     }
 
-    public void SetHighScore()
-    {
-        if (m_GameOver && m_Points > MenuManager.Instance.highScore)
-        {
-            m_Points = newHighScore;
-            MenuManager.Instance.highScore = newHighScore;
-        }
-    }
+   // public void SetHighScore()
+   // {
+     //   if (m_GameOver && m_Points > MenuManager.Instance.highScore)
+      //  {
+      //      m_Points = newHighScore;
+       //     MenuManager.Instance.highScore = newHighScore;
+      //  }
+    //}
 }
