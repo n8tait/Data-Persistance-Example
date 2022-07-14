@@ -6,7 +6,7 @@ public class Paddle : MonoBehaviour
 {
     public float Speed = 2.0f;
     public float MaxMovement = 2.0f;
-    
+    public Joystick joystick;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,7 +16,8 @@ public class Paddle : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float input = Input.GetAxis("Horizontal");
+        //float input = Input.GetAxis("Horizontal");
+        float input = joystick.Horizontal;
 
         Vector3 pos = transform.position;
         pos.x += input * Speed * Time.deltaTime;

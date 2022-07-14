@@ -30,18 +30,22 @@ public class MenuManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadName();
-        highScoreCounter = highScore;
+        //highScoreCounter = highScore;
+        AssignScore();
         AssignName();
        //LoadScore();
 
       // mainManagerScript = GameObject.Find("MainManager").GetComponent<MainManager>();
     }
- private void AssignName()
+ public void AssignName()
     {
         highScoreLeader = firstName;
     }
 
-
+    public void AssignScore()
+    {
+        highScoreCounter = highScore;
+    }
 
     [System.Serializable] //attribute required for JsonUtility -transform into JSON must be serializable 
     class SaveData
@@ -77,8 +81,8 @@ public class MenuManager : MonoBehaviour
             firstName = data.firstName;
             highScore = data.highScore;
 
-            userNameSaved.text = firstName;
-            highScoreText.text = $"High Score: {firstName} : {highScore}";
+           // userNameSaved.text = firstName;
+            highScoreText.text = $"High Score: {firstName} --> {highScore}";
 
 
         }

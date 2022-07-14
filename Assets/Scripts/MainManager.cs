@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainManager : MonoBehaviour
 {
@@ -11,7 +12,8 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text highScoreText;
-    public Text ScoreText;
+    public TextMeshProUGUI ScoreText;
+    //public Text ScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -19,19 +21,33 @@ public class MainManager : MonoBehaviour
     public int newHighScore;
     
     private bool m_GameOver = false;
-
+    public Button yourButton;
+    private AudioSource audioSource;
+    public AudioClip letsGoAudio;
     
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        Button btn = yourButton.GetComponent<Button>();
+        btn.onClick.AddListener(ActionButton);
         if(MenuManager.Instance != null)
         {
-            //MenuManager.Instance.LoadName();
-          highScoreText.text = $"High Score: {MenuManager.Instance.highScoreLeader} : {MenuManager.Instance.highScoreCounter}";
+            if(MenuManager.Instance.highScore > MenuManager.Instance.highScoreCounter)
+            {
+                MenuManager.Instance.AssignName();
+                MenuManager.Instance.AssignScore();
+                highScoreText.text = $"High Score: {MenuManager.Instance.firstName} -> {MenuManager.Instance.highScore}";
+            }
+           //MenuManager.Instance.LoadName();
+           // highScoreText.text = "High Score: :"+ MenuManager.Instance.highScoreLeader + newHighScore;
+             else
+            
+            highScoreText.text = $"High Score: {MenuManager.Instance.highScoreLeader} --> {MenuManager.Instance.highScoreCounter}";
         }
         const float step = 0.6f;
         int perLine = Mathf.FloorToInt(4.0f / step);
-        
+         
         int[] pointCountArray = new [] {1,1,2,2,5,5};
         for (int i = 0; i < LineCount; ++i)
         {
@@ -43,7 +59,7 @@ public class MainManager : MonoBehaviour
                 brick.onDestroyed.AddListener(AddPoint);
             }
         }
-        // highScoreText.text = "High Score: " + MenuManager.Instance.firstName + m_Points;
+         //highScoreText.text = "High Score: " + MenuManager.Instance.firstName + m_Points;
     }
 
     private void Update()
@@ -119,16 +135,48 @@ public class MainManager : MonoBehaviour
         Debug.Log("GameOver()  m_Points =" + m_Points);
     }
 
+    public void ActionButton()
+    {
+        if (!m_Started)
+        {
+            if (yourButton != null)
+            {
+                m_Started = true;
+                float randomDirection = Random.Range(-1.0f, 1.0f);
+                Vector3 forceDir = new Vector3(randomDirection, 1, 0);
+                forceDir.Normalize();
+
+                Ball.transform.SetParent(null);
+                Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+                audioSource.PlayOneShot(letsGoAudio, 1.0f);
+            }
+        }
+        else if (m_GameOver)
+        {
+            // m_Points = MenuManager.Instance.highScore;
+
+            //SetHighScore();
+            // Debug.Log("SET HIgh m_Points = MenuManager.Instance.highScore");
+            if (yourButton != null)
+            {
+                audioSource.PlayOneShot(letsGoAudio, 1.0f);
+                //MenuManager.Instance.SaveName();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
+        }
+    }
+
     public void SetHighScore()
    {
 
         if (m_Points > MenuManager.Instance.highScoreCounter)
         {
-            //m_Points = newHighScore;
-            //MenuManager.Instance.highScore = newHighScore;
+            m_Points = newHighScore;
+            MenuManager.Instance.highScore = newHighScore;
             MenuManager.Instance.SaveName();
+          highScoreText.text = $"High Score: {MenuManager.Instance.firstName} -> {MenuManager.Instance.highScore}";
             //MenuManager.Instance.LoadName();
-            highScoreText.text = $"High Score: {MenuManager.Instance.firstName} : {MenuManager.Instance.highScore}";
         }
+
     }
 }
